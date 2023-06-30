@@ -222,11 +222,12 @@ trait Merge {
 
 impl<K, V> Merge for BTreeMap<K, V>
 where
-    K: Ord,
-    V: Merge,
+    K: Ord + std::fmt::Debug,
+    V: Merge + std::fmt::Debug,
 {
     fn merge(&mut self, other: Self) -> Result<(), MergeError> {
         for (key, value) in other {
+            println!("key: {:?}, value: {:?}", key, value);
             match self.entry(key) {
                 Entry::Vacant(e) => {
                     let _ = e.insert(value);

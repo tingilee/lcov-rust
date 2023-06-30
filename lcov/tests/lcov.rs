@@ -113,6 +113,22 @@ fn merge_report() {
 }
 
 #[test]
+fn merge_report_jacqueline() {
+    fn execute() -> Result<(), Error> {
+        let file1 = PathBuf::from("/Users/jacqueline.lee/robinhood/robinhood/lcov-rust/lcov/tests/fixtures/report_shard_4_of_12.dat");
+        let file2 = PathBuf::from("/Users/jacqueline.lee/robinhood/robinhood/lcov-rust/lcov/tests/fixtures/report_shard_12_of_12.dat");
+        let mut report1 = Report::from_file(file1)?;
+        let report2 = Report::from_file(file2)?;
+        match report1.merge(report2) {
+            Ok(_) => {}
+            Err(e) => panic!("Error merging reports: {}", e),
+        }
+        Ok(())
+    }
+    execute().expect("error");
+}
+
+#[test]
 fn line_filter() {
     fn execute() -> Result<(), Error> {
         let mut filter = HashMap::new();

@@ -55,6 +55,9 @@ impl Value {
 
 impl Merge for Value {
     fn merge(&mut self, other: Self) -> Result<(), MergeError> {
+        println!("Merging sections");
+        println!("My functions: {:?}", self.functions);
+        println!("Other functions: {:?}", other.functions);
         self.functions.merge(other.functions)?;
         self.branches.merge(other.branches)?;
         self.lines.merge(other.lines)?;
@@ -100,8 +103,12 @@ where
                 }
                 Record::SourceFile { path } => source_file = Some(path),
                 Record::FunctionName { name, start_line } => {
+                    let mut new_name = name.clone();
+                    if name.starts_with("(anonymous_") {
+                        new_name = format!("(anonymous_{})", start_line);
+                    }
                     let _ = functions.insert(
-                        function::Key { name },
+                        function::Key { name: new_name },
                         function::Value {
                             start_line: Some(start_line),
                             count: 0,

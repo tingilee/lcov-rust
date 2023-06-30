@@ -38,7 +38,10 @@ impl Merge for Value {
     fn merge(&mut self, other: Self) -> Result<(), MergeError> {
         if let Some(start_line) = other.start_line.as_ref() {
             if let Some(my_start_line) = self.start_line.as_ref() {
+                println!("Start line: {}", start_line);
+                println!("My start line: {}", my_start_line);
                 if start_line != my_start_line {
+                    panic!("Unmatched function line");
                     return Err(MergeError::UnmatchedFunctionLine);
                 }
             }
